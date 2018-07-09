@@ -63,7 +63,7 @@ def main():
                         type=str,
                         action="store",
                         metavar="FilePath",
-                        help="FilePath dictionnary.")
+                        help="FilePath dictionnary. (example : /usr/share/wordlists/rockyou.txt")
 	
 	args = parser.parse_args()
 
