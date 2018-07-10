@@ -30,7 +30,7 @@ args = parser.parse_args()
 
 try:
     passwords = queue.Queue()
-    with open(args.file,"r") as file_stream:
+    with open(args.file,"rb") as file_stream:
         for line in file_stream:
             passwords.put(line.rstrip("\n"))
     for i in range(0,args.num):
