@@ -15,11 +15,11 @@ warning ="\033[1:33m"
 default = "\033[0m" 
 
 try:
-    if args.Key == "x" or args.Key == "X":
+    if args.Key.lower() == "x":
         print green + args.Data + default + " -> " + green + "{0:x}".format(int(args.Data)) + default
-    elif args.Key == "b" or args.Key == "B":
+    elif args.Key .lower() == "b":
         print green + args.Data + default + " -> " + green + "{0:b}".format(int(args.Data)) + default
-    elif args.Key == "o" or args.Key == "O":
+    elif args.Key.lower() == "o" :
         print green + args.Data + default + " -> " + green + "{0:o}".format(int(args.Data)) + default
     else:
         print warning + "[Error] Impossible to convert your datas with this key." + default
