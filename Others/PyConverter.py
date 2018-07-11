@@ -4,7 +4,7 @@
 import argparse
 
 def display(first_color, letter, data):
-	return green + data + default + " -> " + green + ("{0:"+letter+"}").format(int(data)) + default
+	return first_color + data + default + " -> " + first_color + ("{0:"+letter+"}").format(int(data)) + default
 
 parser = argparse.ArgumentParser(description="")
 parser.add_argument("Data", type=str, metavar="Data", help="Data to convert, must be an integer.")
