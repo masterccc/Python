@@ -43,9 +43,9 @@ def main():
         try:
             with open(args.file,"rb") as file_stream:
                 passwords = file_stream.readlines()
-                for i in range(0,args.num):
-                    thread = my_thread(args.smtp,args.port,args.mail,passwords)
-                    thread.start()
+            for i in range(0,args.num):
+                thread = my_thread(args.smtp,args.port,args.mail,passwords)
+                thread.start()
         except IOError as err:
             print(err)
 
